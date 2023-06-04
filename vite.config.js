@@ -22,6 +22,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
+            '$': 'jQuery',
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },

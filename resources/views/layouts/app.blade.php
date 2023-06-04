@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'MBO Tracking System') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'MBO Tracking System') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -76,5 +76,53 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('asset/jquery.js') }}"></script>
+<script>
+$(document).ready(function(){
+    $('#code').keyup(function(){
+        var code = $(this).val();
+        if(code != '')
+        {
+            var _token=$('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('autocomplete.fetch') }}",
+                method:"POST",
+                data:{code:code, _token:_token},
+                success:function(data){
+                    $('#codeList').fadeIn();
+                    $('#codeList').html(data);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#codeList li', function(){
+        $('#code').val($(this).text());
+        $('#codeList').fadeOut();
+    });
+
+    $('#office').keyup(function(){
+        var office = $(this).val();
+        if(office != '')
+        {
+            var _token=$('input[name="_token"]').val();
+            $.ajax({
+                url:"{{ route('autocomplete.fetch') }}",
+                method:"POST",
+                data:{office:office, _token:_token},
+                success:function(data){
+                    $('#officeList').fadeIn();
+                    $('#officeList').html(data);
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#officeList li', function(){
+        $('#office').val($(this).text());
+        $('#officeList').fadeOut();
+    });
+})
+</script>
 </body>
 </html>
